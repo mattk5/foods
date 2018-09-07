@@ -1,32 +1,18 @@
-class AllFoods extends React.Component {
+const AllFoods = (props) => {
+  // just a reminder that you receive props!
+  //  since this is a component that doesn't have state, it can be a const
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      foods: []
-    }
-  }
-
-  componentDidMount(){
-    fetch('/api/v1/foods.json')
-      .then((response) => {return response.json()})
-      .then((data) => {this.setState({ foods: data }) });
-  }
-
-  render(){
-    var foods = this.state.foods.map((food) => {
-      return(
-        <div key={food.id}>
-          <h1>{food.name}</h1>
-          <p>{food.description}</p>
-        </div>
-      )
-    })
+  var foods = props.foods.map((food) => {
+    return(
+      <div key={food.id}>
+        <Food food={food}/>
+      </div>
+    )
+  })
 
     return(
       <div>
         {foods}
       </div>
-    )
-  }
+  )
 }
