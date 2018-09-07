@@ -6,6 +6,10 @@ constructor(props) {
     };
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.addNewFood = this.addNewFood.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
+    this.deleteFood = this.deleteFood.bind(this)
+    this.handleUpdate = this.handleUpdate.bind(this)
+    this.updateFood = this.updateFood.bind(this)
   }
 
 handleFormSubmit(name, description){
@@ -22,9 +26,49 @@ handleFormSubmit(name, description){
   })
 }
 
+handleDelete(id){
+  fetch(`http://localhost:3000/api/v1/foods/${id}`,
+  {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => {
+    this.deleteFood(id)
+  })
+}
+
+handleUpdate(food){
+  fetch(`http://localhost:3000/api/v1/foods/${food.id}`,
+  {
+    method: 'PUT',
+    body: JSON.stringify({food: food}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => {
+    this.updateFood(food)
+  })
+}
+
+updateFood(food){
+  let newFoods = this.state.foods.filter((f) => f.id !== food.id)
+  newFoods.push(food)
+  this.setState({
+    foods: newFoods
+  })
+}
+
 addNewFood(food){
   this.setState({
     foods: this.state.foods.concat(food)
+  })
+}
+
+deleteFood(id){
+  newFoods = this.state.foods.filter((food) => food.id !== id)
+  this.setState({
+    foods: newFoods
   })
 }
 
@@ -37,7 +81,7 @@ render(){
     return(
       <div>
         <NewFood handleFormSubmit={this.handleFormSubmit} />
-        <AllFoods foods={this.state.foods} />
+        <AllFoods foods={this.state.foods} handleDelete={this.handleDelete} handleUpdate = {this.handleUpdate}/>
       </div>
     )
   }

@@ -5,7 +5,7 @@ const AllFoods = (props) => {
   var foods = props.foods.map((food) => {
     return(
       <div key={food.id}>
-        <Food food={food}/>
+        <Food food={food} handleDelete={props.handleDelete} handleUpdate={props.handleUpdate}/>
       </div>
     )
   })
